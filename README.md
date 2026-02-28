@@ -48,4 +48,4 @@ The goal of SafeStep is to demonstrate how modern web technologies can be levera
 👩‍💻 Developer
 
 Developed by Fathima Hiba.T
-B.Tech CSE | Hackathon 2026 Project
+B.Tech CSE| cep | Hackathon 2026 Project
