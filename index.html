@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SafeStep | Smart Women Safety Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#fdf2f8;
+    color:#333;
+}
+
+/* HERO SECTION */
+.hero{
+    height:100vh;
+    background:linear-gradient(135deg,#ad1457,#d81b60);
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+.hero h1{
+    font-size:50px;
+    animation:fadeIn 2s ease-in-out;
+}
+
+.hero p{
+    margin-top:15px;
+    font-size:18px;
+    max-width:500px;
+    opacity:0.9;
+}
+
+.hero button{
+    margin-top:25px;
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:white;
+    color:#ad1457;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.hero button:hover{
+    transform:scale(1.1);
+}
+
+/* SECTION */
+.section{
+    padding:50px 20px;
+    max-width:900px;
+    margin:auto;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    margin-bottom:30px;
+    text-align:center;
+}
+
+h2{
+    color:#ad1457;
+    margin-bottom:10px;
+}
+
+button{
+    padding:10px 20px;
+    margin:8px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#f8bbd0;
+}
+
+.sos{
+    background:#d32f2f;
+    color:white;
+}
+
+input{
+    padding:10px;
+    margin:5px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+#dashboard{
+    display:none;
+}
+
+/* FOOTER */
+footer{
+    background:#880e4f;
+    color:white;
+    padding:40px 20px;
+    text-align:center;
+}
+
+footer p{
+    max-width:800px;
+    margin:auto;
+    line-height:1.6;
+    opacity:0.9;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(-20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>SafeStep</h1>
+    <p>Smart Safety Platform empowering women with instant emergency support and real-time protection tools.</p>
+    <button onclick="showLogin()">Get Started</button>
+</div>
+
+<!-- LOGIN / SIGNUP -->
+<div class="section" id="authSection" style="display:none;">
+    <div class="card">
+        <h2>Login / Signup</h2>
+        <input type="text" id="username" placeholder="Enter your name"><br>
+        <input type="email" id="email" placeholder="Enter email"><br>
+        <button onclick="login()">Continue</button>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="section" id="dashboard">
+
+    <div class="card">
+        <h2>🚨 Emergency SOS</h2>
+        <button class="sos" onclick="triggerSOS()">Send SOS</button>
+    </div>
+
+    <div class="card">
+        <h2>📍 Live Location</h2>
+        <button onclick="getLocation()">Share Location</button>
+        <p id="locationDisplay"></p>
+    </div>
+
+    <div class="card">
+        <h2>⏳ Safety Timer</h2>
+        <input type="number" id="time" placeholder="Enter minutes">
+        <button onclick="startTimer()">Start</button>
+        <button onclick="cancelTimer()">Cancel</button>
+        <p id="countdown"></p>
+    </div>
+
+    <div class="card">
+        <h2>📞 Fake Call</h2>
+        <button onclick="fakeCall()">Activate</button>
+    </div>
+
+    <div class="card">
+        <h2>👩‍👩‍👧 Emergency Contact</h2>
+        <input type="text" id="contactName" placeholder="Contact Name">
+        <input type="text" id="contactNumber" placeholder="Contact Number">
+        <button onclick="saveContact()">Save Contact</button>
+        <p id="savedContact"></p>
+    </div>
+
+</div>
+
+<footer>
+<h3>About SafeStep</h3>
+<p>
+SafeStep is an intelligent women safety platform developed as part of Hackathon 2026 by Fathima Hiba.T (B.Tech CSE). 
+The system integrates real-time GPS tracking, automated SOS triggering, emergency contact management, and smart safety timers 
+to provide enhanced personal security support. 
+
+This project demonstrates how modern web technologies can be leveraged to empower women through accessible, responsive, 
+and automated digital safety solutions.
+</p>
+<p style="margin-top:20px;">© 2026 SafeStep | All Rights Reserved</p>
+</footer>
+
+<script>
+var timer;
+var secondsLeft;
+
+function showLogin(){
+    document.querySelector(".hero").style.display="none";
+    document.getElementById("authSection").style.display="block";
+}
+
+function login(){
+    var name=document.getElementById("username").value;
+    if(name==""){
+        alert("Enter name first");
+        return;
+    }
+    document.getElementById("authSection").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+}
+
+function triggerSOS(){
+    alert("🚨 Emergency SOS Activated!");
+    getLocation();
+}
+
+function getLocation(){
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(position){
+            var lat=position.coords.latitude;
+            var lon=position.coords.longitude;
+            var link="https://www.google.com/maps?q="+lat+","+lon;
+            document.getElementById("locationDisplay").innerHTML=
+            "<a href='"+link+"' target='_blank'>Open in Google Maps</a>";
+        });
+    }
+}
+
+function startTimer(){
+    var minutes=document.getElementById("time").value;
+    if(minutes==""){
+        alert("Enter minutes");
+        return;
+    }
+    secondsLeft=minutes*60;
+    timer=setInterval(function(){
+        secondsLeft--;
+        var min=Math.floor(secondsLeft/60);
+        var sec=secondsLeft%60;
+        document.getElementById("countdown").innerHTML=
+        "Time Remaining: "+min+":"+(sec<10?"0"+sec:sec);
+        if(secondsLeft<=0){
+            clearInterval(timer);
+            triggerSOS();
+        }
+    },1000);
+}
+
+function cancelTimer(){
+    clearInterval(timer);
+    document.getElementById("countdown").innerHTML="Timer Cancelled";
+}
+
+function fakeCall(){
+    setTimeout(function(){
+        alert("📞 Incoming Call from Mom...");
+    },1500);
+}
+
+function saveContact(){
+    var name=document.getElementById("contactName").value;
+    var number=document.getElementById("contactNumber").value;
+    if(name==""||number==""){
+        alert("Enter contact details");
+        return;
+    }
+    localStorage.setItem("contactName",name);
+    localStorage.setItem("contactNumber",number);
+    document.getElementById("savedContact").innerHTML=
+    "Saved Contact: "+name+" ("+number+")";
+}
+</script>
+
+</body>
+</html>
